@@ -1,0 +1,1 @@
+CLUSTER is a reactive typographic system that deforms in real time as a surface map, responding to spatial presence and direct human intervention through sensors or camera. The project includes the TouchDesigner system and a critical article documenting its conceptual and technical framework.

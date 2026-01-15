@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cluster Typography - Diseño tipográfico profesional</title>
+    <meta name="description" content="Cluster Typography by Labaig.">
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --spacing-unit: 2rem;
+        }
+
+        body {
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: black;
+            color: white;
+            overflow-x: hidden;
+            transition: overflow 0.5s ease;
+        }
+
+        body.immersive-mode {
+            overflow: hidden;
+        }
+
+        body.no-scroll {
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* SPLASH SCREEN */
+        .splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 1.5s ease-out;
+        }
+
+        .splash.loaded {
+            opacity: 1;
+        }
+
+        .splash.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .splash video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* HERO */
+        .hero {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        .hero-video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .hero-video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s ease;
+        }
+
+        /* VIDEO CONTROL */
+        .video-control {
+            position: fixed;
+            top: var(--spacing-unit);
+            left: var(--spacing-unit);
+            z-index: 200;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            mix-blend-mode: difference;
+            color: white;
+            opacity: 1;
+            transition: opacity 0.5s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .video-control.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .video-control svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+            display: block;
+        }
+
+        .video-control .icon-exit {
+            display: none;
+        }
+
+        .video-control.active .icon-play {
+            display: none;
+        }
+
+        .video-control.active .icon-exit {
+            display: block;
+        }
+
+        /* TEXTOS DEL HERO */
+        .hero-texts {
+            position: fixed;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            padding: 0 var(--spacing-unit);
+            z-index: 100;
+            pointer-events: none;
+            will-change: transform;
+            mix-blend-mode: difference;
+            color: white;
+            transition: opacity 0.5s ease;
+        }
+
+        body.immersive-mode .hero-texts {
+            opacity: 0;
+        }
+
+        .hero-text {
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            .hero-text {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* MAIN CONTENT */
+        main {
+            position: relative;
+            z-index: 10;
+            transition: opacity 0.5s ease;
+        }
+
+        body.immersive-mode main {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .section-foundry {
+            position: relative;
+            min-height: 100vh;
+
+            /* AJUSTE SCROLL: Margen negativo para que suba antes de acabar el hero */
+            margin-top: -25vh;
+
+            /* AJUSTE PADDING: Reducido arriba para que el texto se vea antes */
+            padding: 6rem var(--spacing-unit) 4rem;
+
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(50px) saturate(180%);
+            -webkit-backdrop-filter: blur(50px) saturate(180%);
+
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 100%);
+
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-foundry h1,
+        .section-foundry p {
+            mix-blend-mode: difference;
+            color: white;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-foundry h1 {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .section-foundry p {
+            max-width: 42rem;
+            line-height: 1.8;
+            font-size: 0.8rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+        }
+
+        /* GRUPO DE BOTONES */
+        .buttons-group {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .cta-button {
+            padding: 0.6rem 1.2rem;
+            font-size: 0.7rem;
+            border: 1px solid white;
+            /* Borde más fino para elegancia */
+            background: transparent;
+            color: white;
+            font-family: 'Geist', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            /* Espacio entre icono y texto */
+
+            mix-blend-mode: difference;
+        }
+
+        .cta-button svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        .cta-button:hover {
+            background: white;
+            color: black;
+        }
+
+        @media (max-width: 768px) {
+            .section-foundry {
+                padding: 6rem 1.5rem 4rem;
+                margin-top: -15vh;
+            }
+
+            .section-foundry p {
+                max-width: 100%;
+            }
+
+            .buttons-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .cta-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body class="no-scroll">
+
+    <button id="videoControl" class="video-control" aria-label="Play Video with Sound">
+        <svg class="icon-play" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z" />
+        </svg>
+        <svg class="icon-exit" viewBox="0 0 24 24">
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+        </svg>
+    </button>
+
+    <div class="splash" id="splash">
+        <video id="splashVideo" src="assets/videos/Video-CLUSTER.mp4" muted playsinline preload="auto"></video>
+    </div>
+
+    <section class="hero">
+        <div class="hero-video-container" id="heroVideoContainer">
+            <video id="heroVideo" src="assets/videos/Video-CLUSTER.mp4" loop muted playsinline></video>
+        </div>
+
+        <div class="hero-texts" id="heroTexts">
+            <div class="hero-text">CLUSTER<br>TYPOGRAPHY</div>
+            <div class="hero-text">LABAIG</div>
+        </div>
+    </section>
+
+    <main>
+        <section class="section-foundry">
+            <h1>¿Qué es CLUSTER?</h1>
+            <p>
+                CLUSTER es un sistema tipográfico vivo que traduce el espacio en forma. La tipografía se comporta como
+                una superficie activa que registra la presencia, la presión y la energía colectiva, haciendo visible
+                cómo el entorno deja huella en el lenguaje. <br>
+            </p>
+            <p>
+                La tipografía se deforma en tiempo real mediante un mapa de superficie generado a partir de datos
+                espaciales y puede ser intervenida en directo por una persona a través de sensores o cámara. El sistema
+                permite tanto comportamiento autónomo como control humano dentro de un mismo flujo visual. <br>
+                El proyecto completo está disponible para descarga, incluyendo el archivo de TouchDesigner y el artículo
+                que documenta su desarrollo y marco conceptual.
+            </p>
+            <p>
+                El proyecto completo está disponible para descarga, incluyendo el archivo de TouchDesigner y el artículo
+                que documenta su desarrollo y marco conceptual.
+            </p>
+
+            <div class="buttons-group">
+                <a href="https://cluster-tipography.vercel.app/" class="cta-button">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                    </svg>
+                    Tipografía
+                </a>
+                <a href="assets/descarga/02_articulo.zip" class="cta-button">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                    </svg>
+                    Artículo
+                </a>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        (function () {
+            'use strict';
+
+            const splashEl = document.getElementById('splash');
+            const splashVideo = document.getElementById('splashVideo');
+            const heroVideo = document.getElementById('heroVideo');
+            const body = document.body;
+            const heroTexts = document.getElementById('heroTexts');
+            const videoControl = document.getElementById('videoControl');
+
+            heroVideo.play().catch(() => { });
+
+            // --- SPLASH ---
+            const SPLASH_DURATION = 2000;
+            async function startSplash() {
+                splashVideo.play().catch(() => { });
+                splashEl.classList.add('loaded');
+                setTimeout(() => {
+                    splashEl.classList.add('fade-out');
+                    body.classList.remove('no-scroll');
+                    setTimeout(() => { splashEl.style.display = 'none'; }, 1500);
+                }, SPLASH_DURATION);
+            }
+
+            // --- VIDEO CONTROL ---
+            let isImmersive = false;
+            let fadeInterval;
+
+            function fadeInAudio(videoEl) {
+                videoEl.volume = 0;
+                videoEl.muted = false;
+                if (fadeInterval) clearInterval(fadeInterval);
+                fadeInterval = setInterval(() => {
+                    if (videoEl.volume < 0.9) {
+                        videoEl.volume += 0.05;
+                    } else {
+                        videoEl.volume = 1;
+                        clearInterval(fadeInterval);
+                    }
+                }, 200);
+            }
+
+            videoControl.addEventListener('click', () => {
+                isImmersive = !isImmersive;
+                if (isImmersive) {
+                    body.classList.add('immersive-mode');
+                    videoControl.classList.add('active');
+                    heroVideo.currentTime = 0;
+                    const onSeeked = () => {
+                        heroVideo.play();
+                        fadeInAudio(heroVideo);
+                        heroVideo.removeEventListener('seeked', onSeeked);
+                    };
+                    heroVideo.addEventListener('seeked', onSeeked);
+                    heroVideo.currentTime = 0.1;
+                } else {
+                    body.classList.remove('immersive-mode');
+                    videoControl.classList.remove('active');
+                    if (fadeInterval) clearInterval(fadeInterval);
+                    heroVideo.muted = true;
+                }
+            });
+
+            // --- SCROLL LOGIC ---
+            let ticking = false;
+
+            function handleScroll() {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                        const windowHeight = window.innerHeight;
+
+                        // Ocultar control
+                        if (scrollY > 50) {
+                            videoControl.classList.add('fade-out');
+                        } else {
+                            videoControl.classList.remove('fade-out');
+                        }
+
+                        // Movimiento textos
+                        if (heroTexts) {
+                            // Aumentamos velocidad (3.5) porque la sección sube antes
+                            const speedFactor = 3.5;
+
+                            const targetTop = 32;
+                            const startCenter = windowHeight / 2;
+                            const distanceToTop = startCenter - targetTop;
+
+                            const moveAmount = Math.min(scrollY * speedFactor, distanceToTop);
+
+                            heroTexts.style.transform = `translateY(calc(-50% - ${moveAmount}px))`;
+                        }
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }
+
+            window.addEventListener('scroll', handleScroll, { passive: true });
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', startSplash);
+            } else {
+                startSplash();
+            }
+        })();
+    </script>
+</body>
+
+</html>
