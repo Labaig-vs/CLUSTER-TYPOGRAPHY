@@ -1,6 +1,6 @@
 # CLUSTER-TIPOGRAPHY
 
-Repositorio de promoción y recursos para CLUSTER-TIPOGRAPHY - Foundry Club.
+Repositorio de promoción y recursos para CLUSTER-TYPOGRAPHY - Foundry Club.
 
 ## Estructura del Proyecto
 
